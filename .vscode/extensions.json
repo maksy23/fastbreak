@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    // Dotenv
+    "mikestead.dotenv",
+    // Docker
+    "ms-azuretools.vscode-docker",
+    // Duplicate Action
+    "mrmlnc.vscode-duplicate",
+    // EditorConfig
+    "editorconfig.editorconfig",
+    // ESLint
+    "dbaeumer.vscode-eslint",
+    // GitHub Actions
+    "github.vscode-github-actions",
+    // GitLens
+    "eamodio.gitlens",
+    // npm Intellisense
+    "christian-kohler.npm-intellisense",
+    // Partial Diff
+    "ryu1kn.partial-diff",
+    // Prettier
+    "esbenp.prettier-vscode",
+    // Stylelint
+    "stylelint.vscode-stylelint",
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss"
+  ]
+}
