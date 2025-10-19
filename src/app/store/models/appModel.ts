@@ -4,7 +4,7 @@ export interface AppModel {
 
 const appModel = (): AppModel => {
   return {
-    appName: 'ai-app',
+    appName: 'fastbreak',
   }
 }
 

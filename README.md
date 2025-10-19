@@ -10,6 +10,8 @@ A full-stack sports event management dashboard built with NextJS, Typescript and
 cp .env.example .env.local
 ```
 
+Use `.env.local` to store your environment variables for local development.
+
 ### 2. Run Development Server
 
 ```bash
