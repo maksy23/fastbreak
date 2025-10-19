@@ -1,7 +1,7 @@
 {
   "css.format.enable": false,
   "css.validate": false,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "eslint.useFlatConfig": true,
   "files.associations": {
     "*.css": "tailwindcss"
