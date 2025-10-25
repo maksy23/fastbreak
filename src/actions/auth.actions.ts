@@ -80,6 +80,23 @@ export async function signOut(): Promise<ActionResponse> {
   }
 }
 
+// TODO: Test and hook it up at the end
+export async function resetPassword(email: string): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient()
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/update-password`,
+    })
+
+    if (error) throw error
+
+    return handleSuccess(undefined)
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
 export async function getUser() {
   const supabase = await createClient()
   const {
