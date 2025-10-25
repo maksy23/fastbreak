@@ -4,12 +4,17 @@ import { ActionResponse } from '@/types/action-response.types'
  * Handles errors in Server Actions with consistent format
  */
 export function handleError(error: unknown): ActionResponse<never> {
-  console.error('Server Action error:', error)
+  if (process.env.NODE_ENV === 'development') {
+    console.error('Server Action error:', error)
+  }
 
   if (error instanceof Error) {
     return {
       success: false,
-      error: error.message,
+      error:
+        process.env.NODE_ENV === 'development'
+          ? error.message
+          : 'An error occurred. Please try again.',
     }
   }
 
