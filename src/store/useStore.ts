@@ -1,5 +1,5 @@
-import { createStore, createTypedHooks } from 'easy-peasy'
 import type { Store } from 'easy-peasy'
+import { createStore, createTypedHooks } from 'easy-peasy'
 
 import appModel from './models/appModel'
 import { AppModel } from './models/appModel'
