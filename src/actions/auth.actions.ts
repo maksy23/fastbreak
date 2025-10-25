@@ -8,6 +8,7 @@ import { handleError, handleSuccess } from '@/lib/utils/action-helpers'
 import { ActionResponse } from '@/types/action-response.types'
 
 export async function signUp(
+  fullName: string,
   email: string,
   password: string,
 ): Promise<ActionResponse<{ email: string }>> {
@@ -17,6 +18,11 @@ export async function signUp(
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: fullName, // Store name in user metadata
+        },
+      },
     })
 
     if (error) throw error

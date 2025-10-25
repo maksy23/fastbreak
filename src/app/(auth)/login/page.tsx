@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import { LoginForm } from '@/components/login-form/login-form'
-import { VolleyballIcon } from '@/Images/icons/volleyball'
+import { VolleyballIcon } from '@/images/icons/volleyball'
 import SoccerBallAndCleatImage from '@/images/soccer-ball-and-cleat.jpg'
 
 export default function LoginPage() {
