@@ -1,4 +1,4 @@
-import { ActionResponse } from '@/types/database'
+import { ActionResponse } from '@/types/action-response.types'
 
 /**
  * Handles errors in Server Actions with consistent format

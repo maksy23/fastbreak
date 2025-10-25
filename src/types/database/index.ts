@@ -1,16 +1,5 @@
 import { Database } from './database.types'
 
-// Generic action response type for consistent error handling
-export type ActionResponse<T = void> =
-  | {
-      success: true
-      data: T
-    }
-  | {
-      success: false
-      error: string
-    }
-
 // Helper types for cleaner usage
 export type Tables<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row']

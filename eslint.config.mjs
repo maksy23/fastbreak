@@ -5,6 +5,7 @@ import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import jsx_a11y from 'eslint-plugin-jsx-a11y'
 import prettierPlugin from 'eslint-plugin-prettier'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
 export default [
   {
@@ -45,6 +46,7 @@ export default [
       'react-hooks': reactHooksPlugin,
       'jsx-a11y': jsx_a11y,
       prettier: prettierPlugin,
+      'simple-import-sort': simpleImportSort,
     },
 
     rules: {
@@ -65,6 +67,10 @@ export default [
       // Accessibility rules
       ...jsx_a11y.configs.recommended.rules,
       ...jsx_a11y.configs.strict.rules,
+
+      // Import sorting
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
 ]
