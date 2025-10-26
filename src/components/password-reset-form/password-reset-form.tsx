@@ -9,7 +9,14 @@ import { z } from 'zod'
 
 import { resetPassword } from '@/actions/auth.actions'
 import { Button } from '@/components/base/button'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/base/field'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/base/form'
 import { Input } from '@/components/base/input'
 import { cn } from '@/lib/utils/utils'
 
@@ -29,12 +36,11 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
   const [isSuccess, setIsSuccess] = useState(false)
 
   // Setup React Hook Form with Zod validation
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<PasswordResetFormValues>({
+  const form = useForm<PasswordResetFormValues>({
     resolver: zodResolver(passwordResetSchema),
+    defaultValues: {
+      email: '',
+    },
   })
 
   async function onSubmit(values: PasswordResetFormValues) {
@@ -55,7 +61,7 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
   if (isSuccess) {
     return (
       <div className={cn('flex flex-col gap-6', className)}>
-        <FieldGroup>
+        <div className='flex flex-col gap-6'>
           <div className='flex flex-col items-center gap-1 text-center'>
             <h1 className='text-2xl font-bold'>Check your email</h1>
             <p className='text-muted-foreground text-sm text-balance'>
@@ -64,67 +70,14 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
             </p>
           </div>
 
-          <Field>
-            <Button
-              onClick={() => setIsSuccess(false)}
-              variant='outline'
-            >
-              Send another email
-            </Button>
-          </Field>
-
-          <Field>
-            <FieldDescription className='text-center'>
-              Remember your password?{' '}
-              <Link
-                href='/login'
-                className='underline underline-offset-4'
-              >
-                Back to login
-              </Link>
-            </FieldDescription>
-          </Field>
-        </FieldGroup>
-      </div>
-    )
-  }
-
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={cn('flex flex-col gap-6', className)}
-    >
-      <FieldGroup>
-        <div className='flex flex-col items-center gap-1 text-center'>
-          <h1 className='text-2xl font-bold'>Reset your password</h1>
-          <p className='text-muted-foreground text-sm text-balance'>
-            Enter your email address and we&apos;ll send you a link to reset your password
-          </p>
-        </div>
-
-        <Field>
-          <FieldLabel htmlFor='email'>Email</FieldLabel>
-          <Input
-            id='email'
-            type='email'
-            placeholder='m@example.com'
-            disabled={isLoading}
-            {...register('email')}
-          />
-          {errors.email && <p className='text-sm text-red-500'>{errors.email.message}</p>}
-        </Field>
-
-        <Field>
           <Button
-            type='submit'
-            disabled={isLoading}
+            onClick={() => setIsSuccess(false)}
+            variant='outline'
           >
-            {isLoading ? 'Sending...' : 'Send reset link'}
+            Send another email
           </Button>
-        </Field>
 
-        <Field>
-          <FieldDescription className='text-center'>
+          <p className='text-muted-foreground text-center text-sm'>
             Remember your password?{' '}
             <Link
               href='/login'
@@ -132,9 +85,63 @@ export function PasswordResetForm({ className }: PasswordResetFormProps) {
             >
               Back to login
             </Link>
-          </FieldDescription>
-        </Field>
-      </FieldGroup>
-    </form>
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn('flex flex-col gap-6', className)}
+      >
+        <div className='flex flex-col gap-6'>
+          <div className='flex flex-col items-center gap-1 text-center'>
+            <h1 className='text-2xl font-bold'>Reset your password</h1>
+            <p className='text-muted-foreground text-sm text-balance'>
+              Enter your email address and we&apos;ll send you a link to reset your password
+            </p>
+          </div>
+
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder='m@example.com'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type='submit'
+            disabled={isLoading}
+          >
+            {isLoading ? 'Sending...' : 'Send reset link'}
+          </Button>
+
+          <p className='text-muted-foreground text-center text-sm'>
+            Remember your password?{' '}
+            <Link
+              href='/login'
+              className='underline underline-offset-4'
+            >
+              Back to login
+            </Link>
+          </p>
+        </div>
+      </form>
+    </Form>
   )
 }
