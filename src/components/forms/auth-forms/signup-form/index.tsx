@@ -71,7 +71,7 @@ export function SignupForm({ className }: SignupFormProps) {
 
     if (result.success) {
       toast.success('Account created successfully!')
-      router.push('/dashboard')
+      router.push('/')
       router.refresh()
     } else {
       // Check if it's the "already registered" error

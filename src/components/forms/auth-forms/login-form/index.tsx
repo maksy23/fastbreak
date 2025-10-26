@@ -2,8 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -37,6 +37,15 @@ export function LoginForm({ className }: LoginFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error === 'auth_error') {
+      toast.error('Authentication link expired or invalid. Please try again.')
+    }
+  }, [searchParams])
+
   // Setup React Hook Form with Zod validation
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -55,7 +64,7 @@ export function LoginForm({ className }: LoginFormProps) {
 
     if (result.success) {
       toast.success('Logged in successfully!')
-      router.push('/dashboard')
+      router.push('/')
       router.refresh()
     } else {
       toast.error(result.error)
