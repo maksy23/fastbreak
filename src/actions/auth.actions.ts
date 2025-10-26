@@ -116,6 +116,24 @@ export async function resetPassword(email: string): Promise<ActionResponse> {
   }
 }
 
+export async function updatePassword(newPassword: string): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient()
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    })
+
+    if (error) throw error
+
+    revalidatePath('/', 'layout')
+
+    return handleSuccess(undefined)
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
 export async function getUser() {
   const supabase = await createClient()
   const {
