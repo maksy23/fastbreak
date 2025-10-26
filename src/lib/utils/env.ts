@@ -9,7 +9,7 @@ function getEnvVar(key: string): string {
 }
 
 export const env = {
-  appUrl: getEnvVar('NEXT_PUBLIC_APP_URL'),
+  siteUrl: getEnvVar('NEXT_PUBLIC_SITE_URL'),
   supabase: {
     url: getEnvVar('NEXT_PUBLIC_SUPABASE_URL'),
     anonKey: getEnvVar('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
