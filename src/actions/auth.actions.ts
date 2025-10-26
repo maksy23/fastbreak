@@ -15,17 +15,36 @@ export async function signUp(
   try {
     const supabase = await createClient()
 
+    // Check if user is already authenticated and sign them out
+    const {
+      data: { user: existingUser },
+    } = await supabase.auth.getUser()
+
+    if (existingUser) {
+      await supabase.auth.signOut()
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          full_name: fullName, // Store name in user metadata
+          full_name: fullName,
         },
       },
     })
 
     if (error) throw error
+
+    // KEY CHECK: If user exists but no session was created, email is already registered
+    // Supabase returns user object but no session when email exists
+    if (data.user && !data.session) {
+      return {
+        success: false,
+        error:
+          'This email is already registered. Please sign in instead or use the password reset option if you forgot your password.',
+      }
+    }
 
     if (!data.user || !data.user.email) {
       throw new Error('Failed to create user')

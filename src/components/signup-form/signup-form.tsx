@@ -74,7 +74,18 @@ export function SignupForm({ className }: SignupFormProps) {
       router.push('/dashboard')
       router.refresh()
     } else {
-      toast.error(result.error)
+      // Check if it's the "already registered" error
+      if (result.error.includes('already registered')) {
+        toast.error(result.error, {
+          action: {
+            label: 'Sign In',
+            onClick: () => router.push('/login'),
+          },
+          duration: 6000,
+        })
+      } else {
+        toast.error(result.error)
+      }
     }
   }
 
