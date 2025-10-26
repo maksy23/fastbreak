@@ -1,4 +1,4 @@
-import { PasswordResetForm } from '@/components/password-reset-form/password-reset-form'
+import { PasswordResetForm } from '@/components/forms/auth-forms/password-reset-form'
 import FootballImage from '@/images/football.jpg'
 
 import { AuthPageLayout } from '../layout'
