@@ -10,7 +10,15 @@ import z from 'zod'
 
 import { signUp } from '@/actions/auth.actions'
 import { Button } from '@/components/base/button'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/base/field'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/base/form'
 import { Input } from '@/components/base/input'
 import { cn } from '@/lib/utils/utils'
 
@@ -44,12 +52,14 @@ export function SignupForm({ className }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   // Setup React Hook Form with Zod validation
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormValues>({
+  const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   })
 
   async function onSubmit(values: SignupFormValues) {
@@ -69,86 +79,110 @@ export function SignupForm({ className }: SignupFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={cn('flex flex-col gap-6', className)}
-    >
-      <FieldGroup>
-        <div className='flex flex-col items-center gap-1 text-center'>
-          <h1 className='text-2xl font-bold'>Create your account</h1>
-          <p className='text-muted-foreground text-sm text-balance'>
-            Fill in the form below to create your account
-          </p>
-        </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn('flex flex-col gap-6', className)}
+      >
+        <div className='flex flex-col gap-6'>
+          <div className='flex flex-col items-center gap-1 text-center'>
+            <h1 className='text-2xl font-bold'>Create your account</h1>
+            <p className='text-muted-foreground text-sm text-balance'>
+              Fill in the form below to create your account
+            </p>
+          </div>
 
-        <Field>
-          <FieldLabel htmlFor='fullName'>Full Name</FieldLabel>
-          <Input
-            id='fullName'
-            type='text'
-            placeholder='John Doe'
-            disabled={isLoading}
-            {...register('fullName')}
+          <FormField
+            control={form.control}
+            name='fullName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type='text'
+                    placeholder='John Doe'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.fullName && <p className='text-sm text-red-500'>{errors.fullName.message}</p>}
-        </Field>
 
-        <Field>
-          <FieldLabel htmlFor='email'>Email</FieldLabel>
-          <Input
-            id='email'
-            type='email'
-            placeholder='m@example.com'
-            disabled={isLoading}
-            {...register('email')}
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder='m@example.com'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  We&apos;ll use this to contact you. We will not share your email with anyone else.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.email && <p className='text-sm text-red-500'>{errors.email.message}</p>}
-          <FieldDescription>
-            We&apos;ll use this to contact you. We will not share your email with anyone else.
-          </FieldDescription>
-        </Field>
 
-        <Field>
-          <FieldLabel htmlFor='password'>Password</FieldLabel>
-          <Input
-            id='password'
-            type='password'
-            disabled={isLoading}
-            {...register('password')}
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type='password'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Must be at least 8 characters long.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.password && <p className='text-sm text-red-500'>{errors.password.message}</p>}
-          <FieldDescription>Must be at least 8 characters long.</FieldDescription>
-        </Field>
 
-        <Field>
-          <FieldLabel htmlFor='confirmPassword'>Confirm Password</FieldLabel>
-          <Input
-            id='confirmPassword'
-            type='password'
-            disabled={isLoading}
-            {...register('confirmPassword')}
+          <FormField
+            control={form.control}
+            name='confirmPassword'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type='password'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Please confirm your password.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {errors.confirmPassword && (
-            <p className='text-sm text-red-500'>{errors.confirmPassword.message}</p>
-          )}
-          <FieldDescription>Please confirm your password.</FieldDescription>
-        </Field>
 
-        <Field>
           <Button
             type='submit'
             disabled={isLoading}
           >
             {isLoading ? 'Creating account...' : 'Create Account'}
           </Button>
-        </Field>
 
-        <Field>
-          <FieldDescription className='px-6 text-center'>
+          <p className='text-muted-foreground px-6 text-center text-sm'>
             Already have an account? <Link href='/login'>Sign in</Link>
-          </FieldDescription>
-        </Field>
-      </FieldGroup>
-    </form>
+          </p>
+        </div>
+      </form>
+    </Form>
   )
 }

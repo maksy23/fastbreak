@@ -10,7 +10,14 @@ import { z } from 'zod'
 
 import { signIn } from '@/actions/auth.actions'
 import { Button } from '@/components/base/button'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/base/field'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/base/form'
 import { Input } from '@/components/base/input'
 import { cn } from '@/lib/utils/utils'
 
@@ -31,12 +38,12 @@ export function LoginForm({ className }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   // Setup React Hook Form with Zod validation
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   })
 
   async function onSubmit(values: LoginFormValues) {
@@ -56,61 +63,73 @@ export function LoginForm({ className }: LoginFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={cn('flex flex-col gap-6', className)}
-    >
-      <FieldGroup>
-        <div className='flex flex-col items-center gap-1 text-center'>
-          <h1 className='text-2xl font-bold'>Login to your account</h1>
-          <p className='text-muted-foreground text-sm text-balance'>
-            Enter your email below to login to your account
-          </p>
-        </div>
-
-        <Field>
-          <FieldLabel htmlFor='email'>Email</FieldLabel>
-          <Input
-            id='email'
-            type='email'
-            placeholder='m@example.com'
-            disabled={isLoading}
-            {...register('email')}
-          />
-          {errors.email && <p className='text-sm text-red-500'>{errors.email.message}</p>}
-        </Field>
-
-        <Field>
-          <div className='flex items-center'>
-            <FieldLabel htmlFor='password'>Password</FieldLabel>
-            <Link
-              href='/password-reset'
-              className='ml-auto text-sm underline-offset-4 hover:underline'
-            >
-              Forgot your password?
-            </Link>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn('flex flex-col gap-6', className)}
+      >
+        <div className='flex flex-col gap-6'>
+          <div className='flex flex-col items-center gap-1 text-center'>
+            <h1 className='text-2xl font-bold'>Login to your account</h1>
+            <p className='text-muted-foreground text-sm text-balance'>
+              Enter your email below to login to your account
+            </p>
           </div>
-          <Input
-            id='password'
-            type='password'
-            placeholder='••••••••'
-            disabled={isLoading}
-            {...register('password')}
-          />
-          {errors.password && <p className='text-sm text-red-500'>{errors.password.message}</p>}
-        </Field>
 
-        <Field>
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder='m@example.com'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <div className='flex items-center'>
+                  <FormLabel>Password</FormLabel>
+                  <Link
+                    href='/password-reset'
+                    className='ml-auto text-sm underline-offset-4 hover:underline'
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <FormControl>
+                  <Input
+                    type='password'
+                    placeholder='••••••••'
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <Button
             type='submit'
             disabled={isLoading}
           >
             {isLoading ? 'Logging in...' : 'Login'}
           </Button>
-        </Field>
 
-        <Field>
-          <FieldDescription className='text-center'>
+          <p className='text-muted-foreground text-center text-sm'>
             Don&apos;t have an account?{' '}
             <Link
               href='/signup'
@@ -118,9 +137,9 @@ export function LoginForm({ className }: LoginFormProps) {
             >
               Sign up
             </Link>
-          </FieldDescription>
-        </Field>
-      </FieldGroup>
-    </form>
+          </p>
+        </div>
+      </form>
+    </Form>
   )
 }
