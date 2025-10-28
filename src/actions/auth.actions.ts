@@ -99,7 +99,6 @@ export async function signOut(): Promise<ActionResponse> {
   }
 }
 
-// TODO: Test and hook it up at the end
 export async function resetPassword(email: string): Promise<ActionResponse> {
   try {
     const supabase = await createClient()
