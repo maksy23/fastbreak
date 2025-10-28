@@ -32,6 +32,7 @@ type PasswordResetFormProps = {
 }
 
 export function PasswordResetForm({ className }: PasswordResetFormProps) {
+  // Local state
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 

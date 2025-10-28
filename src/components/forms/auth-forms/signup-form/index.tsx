@@ -48,8 +48,11 @@ type SignupFormProps = {
 }
 
 export function SignupForm({ className }: SignupFormProps) {
-  const router = useRouter()
+  // Local state
   const [isLoading, setIsLoading] = useState(false)
+
+  // Hooks
+  const router = useRouter()
 
   // Setup React Hook Form with Zod validation
   const form = useForm<SignupFormValues>({
