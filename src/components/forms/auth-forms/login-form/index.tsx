@@ -34,17 +34,12 @@ type LoginFormProps = {
 }
 
 export function LoginForm({ className }: LoginFormProps) {
-  const router = useRouter()
+  // Local state
   const [isLoading, setIsLoading] = useState(false)
 
+  // Hooks
+  const router = useRouter()
   const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const error = searchParams.get('error')
-    if (error === 'auth_error') {
-      toast.error('Authentication link expired or invalid. Please try again.')
-    }
-  }, [searchParams])
 
   // Setup React Hook Form with Zod validation
   const form = useForm<LoginFormValues>({
@@ -64,12 +59,22 @@ export function LoginForm({ className }: LoginFormProps) {
 
     if (result.success) {
       toast.success('Logged in successfully!')
-      router.push('/')
+
+      // Redirect to the page they were trying to access, or home
+      const redirectTo = searchParams.get('redirect') ?? '/'
+      router.push(redirectTo)
       router.refresh()
     } else {
       toast.error(result.error)
     }
   }
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error === 'auth_error') {
+      toast.error('Authentication link expired or invalid. Please try again.')
+    }
+  }, [searchParams])
 
   return (
     <Form {...form}>

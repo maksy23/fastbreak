@@ -34,9 +34,13 @@ const updatePasswordSchema = z
 type UpdatePasswordFormValues = z.infer<typeof updatePasswordSchema>
 
 export function UpdatePasswordForm({ className }: { className?: string }) {
-  const router = useRouter()
+  // Local state
   const [isLoading, setIsLoading] = useState(false)
 
+  // Hooks
+  const router = useRouter()
+
+  // Setup React Hook Form with Zod validation
   const form = useForm<UpdatePasswordFormValues>({
     resolver: zodResolver(updatePasswordSchema),
     defaultValues: {
