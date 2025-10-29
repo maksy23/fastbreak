@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function Home() {
   return (
     <div className='from-background to-muted/20 min-h-screen bg-gradient-to-b'>
-      <div className='container mx-auto px-4 py-16'>
+      <div className='container mx-auto max-w-screen-2xl px-4 py-16'>
         <div className='flex flex-col items-center justify-center space-y-8'>
           {/* Hero Section */}
           <div className='max-w-3xl space-y-4 text-center'>
