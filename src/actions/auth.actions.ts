@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
 import { handleError, handleSuccess } from '@/lib/utils/action-helpers'
@@ -93,7 +92,8 @@ export async function signOut(): Promise<ActionResponse> {
     if (error) throw error
 
     revalidatePath('/', 'layout')
-    redirect('/login')
+
+    return handleSuccess(undefined)
   } catch (error) {
     return handleError(error)
   }

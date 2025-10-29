@@ -2,6 +2,7 @@
 
 import { User } from '@supabase/supabase-js'
 import { LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 import { signOut } from '@/actions/auth.actions'
@@ -21,10 +22,15 @@ interface UserNavProps {
 }
 
 export function UserNav({ user }: UserNavProps) {
+  const router = useRouter()
+
   const handleLogout = async () => {
     const result = await signOut()
     if (!result?.success) {
       toast.error(result?.error || 'Failed to logout')
+    } else {
+      router.push('/login')
+      router.refresh()
     }
   }
 

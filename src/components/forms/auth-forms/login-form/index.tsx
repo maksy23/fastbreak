@@ -61,8 +61,7 @@ export function LoginForm({ className }: LoginFormProps) {
       toast.success('Logged in successfully!')
 
       // Redirect to the page they were trying to access, or home
-      const redirectTo = searchParams.get('redirect') ?? '/'
-      router.push(redirectTo)
+      router.push('/')
       router.refresh()
     } else {
       toast.error(result.error)
