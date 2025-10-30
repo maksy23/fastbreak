@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/base/select'
 import { Textarea } from '@/components/base/textarea'
+import { VenueList } from '@/components/venues/venue-list'
 import { EventWithVenues, Venue } from '@/types/database'
 
 const SPORT_TYPES = [
@@ -194,51 +195,70 @@ export function EventForm({ venues, initialData }: EventFormProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name='venue_ids'
-          render={() => (
-            <FormItem>
-              <div className='mb-4'>
-                <FormLabel>Venues</FormLabel>
-                <FormDescription>Select one or more venues for this event</FormDescription>
-              </div>
-              {venues.map((venue) => (
-                <FormField
-                  key={venue.id}
-                  control={form.control}
-                  name='venue_ids'
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={venue.id}
-                        className='flex flex-row items-start space-y-0 space-x-3'
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(venue.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, venue.id])
-                                : field.onChange(field.value?.filter((value) => value !== venue.id))
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className='font-normal'>
-                          {venue.name}
-                          {venue.location && (
-                            <span className='text-muted-foreground ml-2'>- {venue.location}</span>
-                          )}
-                        </FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              ))}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className='space-y-4'>
+          <VenueList
+            venues={venues}
+            onVenuesChange={() => router.refresh()}
+          />
+
+          <FormField
+            control={form.control}
+            name='venue_ids'
+            render={() => (
+              <FormItem>
+                <div className='mb-4'>
+                  <FormLabel>Select Venues for This Event</FormLabel>
+                  <FormDescription>
+                    Choose one or more venues where this event will take place
+                  </FormDescription>
+                </div>
+                {venues.length > 0 ? (
+                  venues.map((venue) => (
+                    <FormField
+                      key={venue.id}
+                      control={form.control}
+                      name='venue_ids'
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={venue.id}
+                            className='flex flex-row items-start space-y-0 space-x-3'
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(venue.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, venue.id])
+                                    : field.onChange(
+                                        field.value?.filter((value) => value !== venue.id),
+                                      )
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className='font-normal'>
+                              {venue.name}
+                              {venue.location && (
+                                <span className='text-muted-foreground ml-2'>
+                                  - {venue.location}
+                                </span>
+                              )}
+                            </FormLabel>
+                          </FormItem>
+                        )
+                      }}
+                    />
+                  ))
+                ) : (
+                  <p className='text-muted-foreground text-sm'>
+                    Add venues above to select them for this event.
+                  </p>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className='flex gap-4'>
           <Button
