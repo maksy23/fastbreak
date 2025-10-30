@@ -2,6 +2,9 @@
 
 A sports event management application with multi-venue support and user authentication.
 
+<img width="1511" height="821" alt="Screenshot 2025-10-29 at 8 44 17 PM" src="https://github.com/user-attachments/assets/364eb8e4-8d7c-4090-aa47-f5ae82286083" />
+<img width="1508" height="820" alt="Screenshot 2025-10-29 at 8 45 56 PM" src="https://github.com/user-attachments/assets/7c875995-8e68-412e-9e33-4e83353187bb" />
+
 ## Tech Stack
 
 - **Framework**: Next.js 15 (App Router)
