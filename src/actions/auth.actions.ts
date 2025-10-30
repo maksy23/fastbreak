@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 
 import { createClient } from '@/lib/supabase/server'
 import { handleError, handleSuccess } from '@/lib/utils/action-helpers'
+import { env } from '@/lib/utils/env'
 import { ActionResponse } from '@/types/action-response.types'
 
 export async function signUp(
@@ -100,11 +101,13 @@ export async function signOut(): Promise<ActionResponse> {
 }
 
 export async function resetPassword(email: string): Promise<ActionResponse> {
+  const { siteUrl } = env
+
   try {
     const supabase = await createClient()
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/update-password`,
+      redirectTo: `${siteUrl}/auth/callback?next=/update-password`,
     })
 
     if (error) throw error

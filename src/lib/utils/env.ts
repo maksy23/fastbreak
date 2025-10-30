@@ -14,4 +14,5 @@ export const env = {
     url: getEnvVar('NEXT_PUBLIC_SUPABASE_URL'),
     anonKey: getEnvVar('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
   },
+  bypassAuth: getEnvVar('NEXT_PUBLIC_BYPASS_AUTH'),
 } as const

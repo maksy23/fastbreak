@@ -3,12 +3,12 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { env } from '@/lib/utils/env'
 
+const { siteUrl, bypassAuth } = env
+
 // Multi-layer safety check
 const isDevelopment = process.env.NODE_ENV === 'development'
-const isLocalhost =
-  process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') ||
-  process.env.NEXT_PUBLIC_SITE_URL?.includes('127.0.0.1')
-const bypassEnabled = process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true'
+const isLocalhost = siteUrl?.includes('localhost') || siteUrl?.includes('127.0.0.1')
+const bypassEnabled = bypassAuth === 'true'
 
 // Only bypass if ALL conditions are met
 const LOCAL_DEV_BYPASS_AUTH = isDevelopment && isLocalhost && bypassEnabled
