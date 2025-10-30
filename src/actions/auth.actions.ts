@@ -34,19 +34,25 @@ export async function signUp(
       },
     })
 
-    if (error) throw error
-
-    // KEY CHECK: If user exists but no session was created, email is already registered
-    // Supabase returns user object but no session when email exists
-    if (data.user && !data.session) {
-      return {
-        success: false,
-        error:
-          'This email is already registered. Please sign in instead or use the password reset option if you forgot your password.',
+    // Handle errors from Supabase
+    if (error) {
+      // Check if it's a duplicate user error
+      if (
+        error.status === 422 ||
+        error.message.toLowerCase().includes('already') ||
+        error.message.toLowerCase().includes('exists')
+      ) {
+        return {
+          success: false,
+          error:
+            'This email is already registered. Please sign in instead or use the password reset option if you forgot your password.',
+        }
       }
+      throw error
     }
 
-    if (!data.user || !data.user.email) {
+    // Check if signup actually succeeded
+    if (!data.user || !data.user.email || !data.session) {
       throw new Error('Failed to create user')
     }
 
